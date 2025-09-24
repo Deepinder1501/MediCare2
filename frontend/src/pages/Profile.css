@@ -1,0 +1,85 @@
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+/* Card */
+.profile-form {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Title */
+.profile-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #007bff; /* ✅ Blue heading */
+}
+
+/* Inputs */
+.profile-form input,
+.profile-form select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff; /* ✅ Always white */
+  color: #000; /* ✅ Black text */
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.profile-form input:focus,
+.profile-form select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Read-only email */
+.profile-form input[readonly] {
+  background-color: #e9ecef; /* light gray */
+  cursor: not-allowed;
+}
+
+/* Button */
+.profile-button {
+  background-color: #007bff;
+  color: #fff;
+  font-weight: 500;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.profile-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Message */
+.profile-message {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 15px;
+  color: #28a745;
+}
+
+.profile-message.error {
+  color: #dc3545;
+}

@@ -1,0 +1,120 @@
+/* src/pages/Cart.css */
+
+.cart-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.cart-page h1 {
+  text-align: center;
+  color: #1e3a8a; /* deep blue */
+  margin-bottom: 30px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f4ff;
+  padding: 20px;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item h3 {
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.cart-item p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #333333;
+}
+
+.cart-item button {
+  margin-top: 10px;
+  align-self: flex-start;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.cart-item button:hover {
+  background-color: #3b60d0;
+}
+
+/* Quantity display styled like a button */
+/* Quantity controls */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.cart-quantity {
+  display: inline-block;
+  background-color: #1e3a8a; /* deep blue */
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-align: center;
+  min-width: 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Plus and minus buttons */
+.qty-btn {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.qty-btn:hover {
+  background-color: #3b60d0;
+}
+
+
+
+@media screen and (min-width: 768px) {
+  .cart-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-item p {
+    margin: 0 10px;
+  }
+
+  .cart-item button {
+    margin: 0;
+  }
+}

@@ -1,0 +1,221 @@
+/* CSS Variables for theme consistency */
+:root {
+  --blue-primary: #0d47a1;
+  --blue-hover: #1976d2;
+  --white: #ffffff;
+  --light-blue-bg: #f8faff;
+  --text-dark: #333;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  --border-color: #e0e0e0;
+}
+body{
+  margin: 0;
+  padding: 0;
+  
+}
+
+/* Page Container */
+.products-page {
+ width: 100%;
+  /* padding: 2rem; */
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  color: var(--text-dark);
+  background-color: var(--light-blue-bg);
+  min-height: 100vh;
+}
+
+/* Page title */
+.page-title {
+  text-align: center;
+  color: var(--blue-primary);
+  margin-bottom: 2.5rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* Categories filter buttons */
+.categories {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--blue-primary);
+  color: var(--white);
+  border-radius: 50px; /* Pill shape for a modern feel */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn.active,
+.category-btn:hover {
+  background-color: var(--blue-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Message text */
+.message {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  padding: 12px;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.success-message {
+  color: #1b5e20;
+  background-color: #d4edda;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Product grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* Individual product card */
+.product-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px var(--shadow-hover);
+}
+
+/* Link styling */
+.product-link {
+  text-decoration: none;
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-image {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+/* Product name */
+.product-name {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--blue-primary);
+  font-weight: 600;
+}
+
+/* Price and stock */
+.product-price{
+  margin-top: -15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* Quantity input + add button container */
+/* Quantity input + add button container */
+.quantity-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Quantity input */
+.quantity-input {
+  width: 70px;
+  padding: 8px;                /* slightly smaller padding */
+  border-radius: 8px;
+  border: 2px solid var(--blue-primary); /* blue border */
+  background-color: var(--white);       /* remove black background */
+  color: var(--text-dark);
+  text-align: center;
+  font-size: 1rem;
+  outline: none;                /* remove default outline */
+}
+
+/* Focus effect for input */
+.quantity-input:focus {
+  border-color: var(--blue-hover);
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.4);
+}
+
+/* Add to cart button */
+.add-to-cart-btn {
+  padding: 10px 16px;
+  background-color: var(--blue-primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 0.7rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--blue-hover);
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.98);
+}
+
+/* Remove default spinner styles in Chrome, Edge, Safari */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  background: transparent;
+  margin: 0;
+}
+
+/* For Firefox */
+.quantity-input[type=number] {
+  -moz-appearance: textfield; /* removes arrows */
+}
+
+/* Optional: create custom blue arrows (using ::after or a wrapper) */
+.quantity-input {
+  position: relative;
+}
+
+/* If you want browser default arrows but blue outline, we can use this in WebKit */
+.quantity-input::-webkit-inner-spin-button {
+  background-color: var(--white);
+  color: var(--blue-primary);
+}

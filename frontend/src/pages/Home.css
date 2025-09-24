@@ -1,0 +1,296 @@
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  width: 100%;
+  font-family: "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #cce6ff, #99ccff);
+  width: 100%;
+  height: 100vh; /* full screen height */
+  position: relative;
+  box-sizing: border-box; /* ensures padding is included in height */
+  width: 1519px;
+  overflow: hidden; /* Ensure twinkling background stays within bounds */
+}
+
+/* Twinkling Background */
+.twinkle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.twinkle-background::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='10' cy='10' r='2' fill='rgba(255,255,255,0.8)'/%3E%3Ccircle cx='80' cy='20' r='1.5' fill='rgba(255,255,255,0.6)'/%3E%3Ccircle cx='30' cy='70' r='2' fill='rgba(255,255,255,0.7)'/%3E%3Ccircle cx='90' cy='80' r='1' fill='rgba(255,255,255,0.5)'/%3E%3C/svg%3E")
+    repeat;
+  animation: twinkle 5s infinite linear;
+  opacity: 0.3;
+}
+
+@keyframes twinkle {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-10px, -10px);
+    opacity: 0.3;
+  }
+}
+
+.hero-content {
+  flex: 1 1 500px;
+  color: #004aad;
+  max-width: 600px;
+  margin-left: 50px;
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: fadeSlideIn 1s forwards 0.3s;
+  z-index: 2; /* Ensure content is above twinkling background */
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero-content .btn {
+  background-color: #347deb;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content .btn::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.15);
+  transition: 0.4s;
+}
+
+.hero-content .btn:hover::before {
+  width: 100%;
+}
+
+.hero-content .btn:hover {
+  background-color: #245cb1;
+}
+
+.hero-image {
+  flex: 1 1 500px;
+  text-align: center;
+  max-width: 600px;
+  margin-right: 50px;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: fadeSlideIn 1s forwards 0.6s;
+  margin-top: 80px;
+  perspective: 1000px; /* Add perspective for 3D effect */
+}
+
+.hero-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  transition: transform 0.5s;
+  transform: rotateY(0deg);
+}
+
+.hero-image img:hover {
+  transform: rotateY(10deg) rotateX(5deg) scale(1.05); /* 3D effect on hover */
+}
+
+/* ===== Discover Products Section ===== */
+.discover-section {
+  padding: 50px 20px;
+  text-align: center;
+  background-color: #f2f6ff;
+}
+
+.discover-section h2 {
+  font-size: 2rem;
+  color: #004aad;
+  margin-bottom: 30px;
+}
+
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: black;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  width: 250px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  perspective: 1000px; /* Add perspective for 3D effect */
+}
+
+.product-card:hover {
+  transform: translateY(-8px) rotateX(5deg) rotateY(5deg); /* 3D effect on hover */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.product-card img {
+  width: 100%;
+  height: 70%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: transform 0.3s; /* Smooth transition for 3D effect */
+}
+
+.product-card img:hover {
+  transform: rotateY(5deg) rotateX(3deg) scale(1.05); /* 3D effect for product image */
+}
+
+.product-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+  color: #004aad;
+}
+
+.product-card p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* ===== Categories Section ===== */
+.categories-section {
+  padding: 50px 20px;
+  text-align: center;
+  background: #f2f6ff;
+}
+
+.categories-section h2 {
+  font-size: 2rem;
+  color: #004aad;
+  margin-bottom: 30px;
+}
+
+.categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.category-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px 15px;
+  width: 180px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  font-weight: bold;
+  color: #004aad;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  cursor: pointer;
+  perspective: 1000px; /* Add perspective for 3D effect */
+}
+
+.category-card:hover {
+  transform: translateY(-6px) rotateX(5deg) rotateY(5deg); /* 3D effect on hover */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  background-color: #d0e4ff;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+  .hero-section {
+    flex-direction: column-reverse;
+    text-align: center;
+    width: 100%; /* Override fixed width for responsiveness */
+  }
+  .hero-content, .hero-image {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  .hero-content p {
+    font-size: 1rem;
+  }
+  .product-card, .category-card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card, .category-card {
+    width: 100%;
+  }
+  .hero-section {
+    padding: 30px 10px;
+    width: 100%; /* Ensure full width on small screens */
+  }
+  .hero-content h1 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,128 @@
+/* === Reset only inside signup === */
+.signup-container * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === Page Wrapper === */
+.signup-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* === Left Section === */
+.signup-left {
+  flex: 1;
+  background: linear-gradient(135deg, #64b5f6, #2196f3);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.signup-welcome {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.signup-subtext {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* === Right Section === */
+.signup-right {
+  flex: 1;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* === Signup Card === */
+.signup-box {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* === Title === */
+.signup-title {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #2196f3;
+}
+
+/* === Input fields === */
+.signup-input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: 0.3s;
+  background-color: white;
+  color: rgb(85, 85, 85);
+}
+
+.signup-input:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 6px rgba(33, 150, 243, 0.3);
+  outline: none;
+}
+
+/* === Submit button === */
+.signup-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2196f3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup-button:hover {
+  background: #1976d2;
+}
+
+/* === Message text === */
+.signup-message {
+  margin-top: 12px;
+  font-size: 0.9em;
+  color: #f44336; /* red for errors */
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .signup-container {
+    flex-direction: column;
+  }
+
+  .signup-left {
+    flex: none;
+    height: 35vh;
+  }
+
+  .signup-right {
+    flex: none;
+    height: 65vh;
+  }
+}

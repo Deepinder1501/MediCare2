@@ -1,0 +1,60 @@
+/* src/pages/ProductDetails.css */
+.product-details-page {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.product-details-card {
+  display: flex;
+  gap: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 2rem;
+  background-color: #fff;
+  max-width: 900px;
+  width: 100%;
+}
+
+.product-image {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.product-info h2 {
+  margin-top: 0;
+}
+
+.quantity-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 1rem 0;
+}
+
+.quantity-schedule label {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+button.back-btn {
+  background-color: #6c757d;
+}
+.message {
+  color: green;
+  margin-top: 10px;
+}
