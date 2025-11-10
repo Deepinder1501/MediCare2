@@ -3,7 +3,7 @@ import cors from "cors";
 import db from "./config/mysql.js"; 
 import authRoutes from "./routes/authRoutes.js"; 
 import productRoutes from "./routes/productRoutes.js";
-import "./scheduler.js"; 
+// import "./scheduler.js"; 
 import cartRoutes from "./routes/cartRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contact.js";

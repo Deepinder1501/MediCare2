@@ -1,120 +1,3 @@
-// // src/pages/ProductDetails.jsx
-// import { useEffect, useState } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import "./ProductDetails.css";
-// import { getUserIdFromToken } from "../utils/jwt";
-
-// function ProductDetails() {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const [product, setProduct] = useState(null);
-//   const [quantity, setQuantity] = useState(1);
-//   const [scheduleType, setScheduleType] = useState("none");
-//   const [nextOrderDate, setNextOrderDate] = useState("");
-//   const [message, setMessage] = useState("");
-
-//   const tokenUserId = getUserIdFromToken();
-
-//   useEffect(() => {
-//     fetch(`http://localhost:5000/api/products/${id}`)
-//       .then((res) => res.json())
-//       .then((data) => setProduct(data))
-//       .catch((err) => console.error(err));
-//   }, [id]);
-
-//   const handleAddToCart = async () => {
-//     if (!tokenUserId) {
-//       setMessage("You must be logged in to add items to cart");
-//       return;
-//     }
-
-//     const payload = {
-//       userId: tokenUserId,
-//       productId: product.id,
-//       quantity,
-//       scheduleType,
-//       nextOrderDate: scheduleType !== "none" ? nextOrderDate : null
-//     };
-
-//     try {
-//       const res = await fetch("http://localhost:5000/api/cart/add", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(payload)
-//       });
-
-//       const data = await res.json();
-//       if (res.ok) {
-//         setMessage(data.message);
-//       } else {
-//         setMessage(data.error);
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       setMessage("Something went wrong!");
-//     }
-//   };
-
-//   if (!product) return <p>Loading...</p>;
-
-//   return (
-//     <div className="product-details-container">
-//       <img src={`/assets/${product.image}`} alt={product.name} className="product-image" />
-//       <div className="product-info">
-//         <h2>{product.name}</h2>
-//         <p className="category">{product.category}</p>
-//         <p className="price">Price: ₹{product.price}</p>
-//         <p className="description">{product.description}</p>
-//         <p className="strength">Strength: {product.strength}</p>
-//         <p className="expiry">Expiry: {new Date(product.expiry_date).toLocaleDateString()}</p>
-
-//         <div className="actions">
-//           <label>
-//             Quantity:
-//             <input
-//               type="number"
-//               min="1"
-//               value={quantity}
-//               onChange={(e) => setQuantity(Number(e.target.value))}
-//             />
-//           </label>
-
-//           <label>
-//             Schedule:
-//             <select value={scheduleType} onChange={(e) => setScheduleType(e.target.value)}>
-//               <option value="none">None</option>
-//               <option value="weekly">Weekly</option>
-//               <option value="monthly">Monthly</option>
-//             </select>
-//           </label>
-
-//           {scheduleType !== "none" && (
-//             <label>
-//               Next Order Date:
-//               <input
-//                 type="date"
-//                 value={nextOrderDate}
-//                 onChange={(e) => setNextOrderDate(e.target.value)}
-//               />
-//             </label>
-//           )}
-
-//           <button onClick={handleAddToCart}>Add to Cart</button>
-//           {message && <p className="message">{message}</p>}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ProductDetails;
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductDetails.css";
@@ -135,13 +18,16 @@ function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${id}`);
+        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
       } catch (err) {
-        console.error(err);
+        setProduct(null);
         setMessage("Failed to load product. Please try again.");
+        console.error("Product fetch error:", err);
       }
     };
     fetchProduct();
@@ -150,11 +36,11 @@ function ProductDetails() {
   const handleAddToCart = async () => {
     if (!tokenUserId) {
       setMessage("You must be logged in to add items to cart.");
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => navigate("/login"), 1800);
       return;
     }
-
     setIsLoading(true);
+
     const payload = {
       userId: tokenUserId,
       productId: product.id,
@@ -171,19 +57,18 @@ function ProductDetails() {
       });
 
       const data = await res.json();
-      setMessage(data.message || data.error);
+      setMessage(data.message || data.error || "Could not add product.");
       if (res.ok) {
-        setTimeout(() => navigate("/cart"), 1500); // Redirect to cart on success
+        setTimeout(() => navigate("/cart"), 1500);
       }
     } catch (err) {
-      console.error(err);
       setMessage("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!product) {
+  if (!product && !message) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
@@ -196,36 +81,40 @@ function ProductDetails() {
     <div className="product-details-page">
       <div className="product-details-card">
         <img
-          src={`/assets/${product.image}`}
-          alt={product.name}
+          src={product && product.image ? `/assets/${product.image}` : "/assets/fallback-image.jpg"}
+          alt={product ? product.name : "Product image"}
           className="product-image"
-          onError={(e) => (e.target.src = "/assets/fallback-image.jpg")} // Fallback image
+          onError={(e) => (e.target.src = "/assets/fallback-image.jpg")}
         />
         <div className="product-info">
-          <h2>{product.name}</h2>
-          <p className="category">{product.category}</p>
-          <p className="price">₹{product.price.toFixed(2)}</p>
-          <p className="description">{product.description}</p>
-          <p className="strength">Strength: {product.strength}</p>
-          <p className="expiry">
-            Expiry: {new Date(product.expiry_date).toLocaleDateString()}
+          <h2>{product?.name || "Unnamed Product"}</h2>
+          <p className="category">{product?.category || "-"}</p>
+          <p className="price">
+            {product && product.price !== undefined && product.price !== null && !isNaN(Number(product.price))
+              ? `₹${Number(product.price).toFixed(2)}`
+              : "₹0.00"}
           </p>
-
-          <div className="actions">
-            <label className="input-group">
+          <p className="description">{product?.description || "No description."}</p>
+          <p className="strength">Strength: {product?.strength || "N/A"}</p>
+          <p className="expiry">
+            Expiry: {product?.expiry_date ? new Date(product.expiry_date).toLocaleDateString() : "N/A"}
+          </p>
+          <div className="actions-row">
+            <label className="input-group" htmlFor="quantity">
               Quantity:
               <input
+                id="quantity"
                 type="number"
                 min="1"
                 value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
                 aria-label="Quantity"
               />
             </label>
-
-            <label className="input-group">
+            <label className="input-group" htmlFor="schedule-type">
               Schedule:
               <select
+                id="schedule-type"
                 value={scheduleType}
                 onChange={(e) => setScheduleType(e.target.value)}
                 aria-label="Schedule type"
@@ -235,37 +124,31 @@ function ProductDetails() {
                 <option value="monthly">Monthly</option>
               </select>
             </label>
-
             {scheduleType !== "none" && (
-              <label className="input-group">
+              <label className="input-group" htmlFor="next-order-date">
                 Next Order Date:
                 <input
+                  id="next-order-date"
                   type="date"
                   value={nextOrderDate}
                   onChange={(e) => setNextOrderDate(e.target.value)}
                   aria-label="Next order date"
+                  min={new Date().toISOString().split("T")[0]}
                 />
               </label>
             )}
-
-            <button
-              onClick={handleAddToCart}
-              disabled={isLoading}
-              aria-label="Add to cart"
-            >
+            <button className="addcart" onClick={handleAddToCart} disabled={isLoading || quantity < 1} aria-label="Add to cart">
               {isLoading ? "Adding..." : "Add to Cart"}
             </button>
-            {message && <p className={`message ${message.includes("error") ? "error" : ""}`}>
-              {message}
-            </p>}
-            <button
-              className="back-btn"
-              onClick={() => navigate("/products")}
-              aria-label="Back to products"
-            >
-              Back to Products
-            </button>
           </div>
+          {message && (
+            <p className={`message ${message.toLowerCase().includes("fail") || message.toLowerCase().includes("error") ? "error" : ""}`}>
+              {message}
+            </p>
+          )}
+          <button className="back-btn" onClick={() => navigate("/products")} aria-label="Back to products">
+            Back to Products
+          </button>
         </div>
       </div>
     </div>

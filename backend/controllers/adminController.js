@@ -8,6 +8,7 @@ export const getAllUsers = (req, res) => {
   });
 };
 
+
 export const deleteUser = (req, res) => {
   const { id } = req.params;
 
@@ -25,6 +26,8 @@ export const deleteUser = (req, res) => {
   });
 };
 
+
+
 export const getAllProducts = (req, res) => {
   const query = "SELECT * FROM products";
   db.query(query, (err, results) => {
@@ -36,7 +39,7 @@ export const getAllProducts = (req, res) => {
 
 export const addProduct = (req, res) => {
   const { name, description, price, stock, category, image, strength, expiry_date, rating } = req.body;
-
+ 
   if (!name || !price || !stock) {
     return res.status(400).json({ error: "Name, price, and stock are required" });
   }

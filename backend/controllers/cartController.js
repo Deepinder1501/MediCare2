@@ -1,6 +1,6 @@
 import db from "../config/mysql.js";
 
-// Add product to cart with optional scheduling
+
 export const addToCart = (req, res) => {
   const { userId, productId, quantity, scheduleType, nextOrderDate } = req.body;
 
@@ -8,12 +8,12 @@ export const addToCart = (req, res) => {
     return res.status(400).json({ error: "User and product required" });
   }
 
-  // Validate schedule
+  
   const validScheduleTypes = ["none", "weekly", "monthly"];
   const finalScheduleType = scheduleType && validScheduleTypes.includes(scheduleType) ? scheduleType : "none";
   const finalNextOrderDate = nextOrderDate || null;
 
-  // product price
+  
   const productQuery = "SELECT price FROM products WHERE id = ?";
   db.query(productQuery, [productId], (err, productResults) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -21,13 +21,13 @@ export const addToCart = (req, res) => {
 
     const price = productResults[0].price;
 
-    // Check if product already in cart
+    // Check product already in cart
     const checkQuery = "SELECT * FROM cart WHERE user_id = ? AND product_id = ? AND status='pending'";
     db.query(checkQuery, [userId, productId], (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
 
       if (results.length > 0) {
-        // Update quantity
+        
         const updateQuery = `
           UPDATE cart 
           SET quantity = quantity + ?, 
@@ -55,7 +55,7 @@ export const addToCart = (req, res) => {
   });
 };
 
-// Get cart for a user
+// cart for a user
 export const getCart = (req, res) => {
   const { userId } = req.params;
 
@@ -72,7 +72,7 @@ export const getCart = (req, res) => {
   });
 };
 
-// Update cart quantity 
+// 
 export const updateCartQuantity = (req, res) => {
   const { cartId } = req.params;
   const { quantity } = req.body;
@@ -91,7 +91,6 @@ export const updateCartQuantity = (req, res) => {
   });
 };
 
-// Remove product from cart
 export const removeFromCart = (req, res) => {
   const { cartId } = req.params;
   const query = "DELETE FROM cart WHERE id = ?";
