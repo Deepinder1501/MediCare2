@@ -19,3 +19,14 @@ export const getProductById = (req, res) => {
     res.json(results[0]);
   });
 };
+
+// Search products
+export const searchProducts = (req, res) => {
+  const { q } = req.query;
+  const searchQuery = `%${q}%`;
+  const query = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ? OR category LIKE ?";
+  db.query(query, [searchQuery, searchQuery, searchQuery], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};

@@ -12,6 +12,8 @@ import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs"; 
 import Profile from "./pages/Profile";
 import Reminders from "./pages/Reminders";
+import Checkout from "./pages/Checkout";
+import OrderHistory from "./pages/OrderHistory";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, isAdminRequired = false }) => {
@@ -70,6 +72,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Reminders />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/checkout" 
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/orders" 
+          element={
+            <ProtectedRoute>
+              <OrderHistory />
             </ProtectedRoute>
           } 
         />

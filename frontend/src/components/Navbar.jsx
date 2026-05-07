@@ -44,6 +44,7 @@ function Navbar() {
         <Link to="/contact">Contact Us</Link>
         <Link to="/about">About Us</Link>
         <Link to="/reminders">Reminders</Link>
+        <Link to="/orders">Orders</Link>
       </div>
       <div className="navbar-right">
         {isAdmin && (

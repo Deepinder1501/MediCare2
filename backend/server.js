@@ -13,6 +13,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contact.js";
 import profileRoute from "./routes/profileRoutes.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/auth/profile", profileRoute);
 app.use("/api/reminders", reminderRoutes);
+app.use("/api/orders", orderRoutes);
 
 
 

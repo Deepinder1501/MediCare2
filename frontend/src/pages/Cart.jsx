@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../api";
 import { getUserIdFromToken } from "../utils/jwt";
 import "./Cart.css";
@@ -115,9 +116,9 @@ const Cart = () => {
               <span>Total</span>
               <span style={{ color: "var(--primary-color)", fontSize: "1.5rem", fontWeight: "700" }}>₹{calculateTotal().toFixed(2)}</span>
             </div>
-            <button className="btn btn-primary btn-checkout" style={{ width: "100%", marginTop: "2rem" }}>
+            <Link to="/checkout" className="btn btn-primary btn-checkout" style={{ width: "100%", marginTop: "2rem", display: "block", textAlign: "center", textDecoration: "none" }}>
               Proceed to Checkout
-            </button>
+            </Link>
           </div>
         </div>
       )}
