@@ -12,7 +12,7 @@ export const createOrder = (req, res) => {
   db.beginTransaction((err) => {
     if (err) return res.status(500).json({ error: err.message });
 
-    const orderQuery = "INSERT INTO orders (userId, totalAmount, shippingAddress, phone, paymentMethod) VALUES (?, ?, ?, ?, ?)";
+    const orderQuery = "INSERT INTO orders (user_id, total_amount, shipping_address, phone, payment_method) VALUES (?, ?, ?, ?, ?)";
     db.query(orderQuery, [userId, totalAmount, shippingAddress, phone, paymentMethod], (err, result) => {
       if (err) {
         return db.rollback(() => {
@@ -21,9 +21,9 @@ export const createOrder = (req, res) => {
       }
 
       const orderId = result.insertId;
-      const orderItems = items.map(item => [orderId, item.productId, item.quantity, item.price]);
+      const orderItems = items.map(item => [orderId, item.id, item.quantity, item.price]);
 
-      const itemsQuery = "INSERT INTO order_items (orderId, productId, quantity, price) VALUES ?";
+      const itemsQuery = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ?";
       db.query(itemsQuery, [orderItems], (err) => {
         if (err) {
           return db.rollback(() => {
@@ -32,7 +32,7 @@ export const createOrder = (req, res) => {
         }
 
         // Clear user's cart
-        const clearCartQuery = "DELETE FROM cart WHERE userId = ?";
+        const clearCartQuery = "DELETE FROM cart WHERE user_id = ?";
         db.query(clearCartQuery, [userId], (err) => {
           if (err) {
             return db.rollback(() => {
@@ -57,7 +57,7 @@ export const createOrder = (req, res) => {
 // Get orders for a specific user
 export const getUserOrders = (req, res) => {
   const { userId } = req.params;
-  const query = "SELECT * FROM orders WHERE userId = ? ORDER BY createdAt DESC";
+  const query = "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC";
   db.query(query, [userId], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
@@ -70,8 +70,8 @@ export const getOrderDetails = (req, res) => {
   const query = `
     SELECT oi.*, p.name, p.image 
     FROM order_items oi 
-    JOIN products p ON oi.productId = p.id 
-    WHERE oi.orderId = ?
+    JOIN products p ON oi.product_id = p.id 
+    WHERE oi.order_id = ?
   `;
   db.query(query, [orderId], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });

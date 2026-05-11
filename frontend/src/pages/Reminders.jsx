@@ -130,10 +130,10 @@ const Reminders = () => {
   return (
     <div className="reminders-page">
       <div className="reminders-container animate-fade">
-        <div className="reminders-header">
-          <h1>Medicine Reminders</h1>
-          <p>Stay on track with your health schedule.</p>
+        <div className="reminders-header-flex">
+          <h1 className="page-title">Medicine Reminders</h1>
         </div>
+        <p className="reminders-subtitle">Stay on track with your health schedule.</p>
 
         <div className="reminders-content">
           <div className="reminder-card add-card">

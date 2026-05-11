@@ -1,23 +1,26 @@
 .about-container {
-  padding: 160px 5% 60px;
+  padding: 140px 5% 80px;
   min-height: 100vh;
+  background-color: #f8fafc;
   text-align: center;
 }
 
-.about-header {
-  max-width: 800px;
-  margin: 0 auto 4rem;
-}
-
-.about-title {
-  font-size: 3rem;
-  color: var(--dark-color);
-  margin-bottom: 1rem;
+.about-header-flex {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid var(--light-color);
+  padding-bottom: 1rem;
 }
 
 .about-subtitle {
   font-size: 1.25rem;
   color: var(--text-secondary);
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  text-align: center;
 }
 
 .about-cards {

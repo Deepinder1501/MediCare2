@@ -68,9 +68,11 @@ function ProductDetails() {
     );
   }
 
-  const imageUrl = product.image && product.image.includes("-") 
-    ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${product.image}` 
-    : `/assets/${product.image}`;
+  const imageUrl = product.image && product.image.startsWith("http")
+    ? product.image
+    : product.image && product.image.includes("-") 
+      ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${product.image}` 
+      : `/assets/${product.image}`;
 
   return (
     <div className="product-details-page">

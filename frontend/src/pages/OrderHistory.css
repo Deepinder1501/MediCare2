@@ -9,6 +9,37 @@
   margin: 0 auto;
 }
 
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.status-legend {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.pending { background-color: #f59e0b; }
+.dot.shipped { background-color: #3b82f6; }
+.dot.delivered { background-color: #10b981; }
+
 .no-orders {
   text-align: center;
   padding: 4rem 2rem;

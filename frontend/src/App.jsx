@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 import Reminders from "./pages/Reminders";
 import Checkout from "./pages/Checkout";
 import OrderHistory from "./pages/OrderHistory";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, isAdminRequired = false }) => {
@@ -34,6 +35,7 @@ const ProtectedRoute = ({ children, isAdminRequired = false }) => {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -6,6 +6,8 @@ import "./AdminPanel.css";
 function AdminPanel() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [activeTab, setActiveTab] = useState("products"); // New state for tabs
   const [editingProductId, setEditingProductId] = useState(null);
   const [productForm, setProductForm] = useState({
     name: "",
@@ -22,6 +24,7 @@ function AdminPanel() {
   useEffect(() => {
     fetchUsers();
     fetchProducts();
+    fetchOrders();
   }, []);
 
   const fetchUsers = async () => {
@@ -42,6 +45,15 @@ function AdminPanel() {
     }
   };
 
+  const fetchOrders = async () => {
+    try {
+      const res = await API.get("/admin/orders");
+      setOrders(res.data);
+    } catch (err) {
+      console.error("Error fetching orders:", err.response?.data || err);
+    }
+  };
+
   const handleDeleteUser = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
@@ -59,6 +71,15 @@ function AdminPanel() {
       fetchProducts();
     } catch (err) {
       console.error("Error deleting product:", err.response?.data || err);
+    }
+  };
+
+  const handleUpdateStatus = async (id, newStatus) => {
+    try {
+      await API.put(`/admin/orders/${id}/status`, { status: newStatus });
+      fetchOrders();
+    } catch (err) {
+      console.error("Error updating order status:", err.response?.data || err);
     }
   };
 
@@ -99,7 +120,7 @@ function AdminPanel() {
     formData.append("strength", productForm.strength);
     formData.append("expiry_date", productForm.expiry_date);
     formData.append("rating", productForm.rating);
-    
+
     if (productForm.image) {
       formData.append("image", productForm.image);
     }
@@ -142,126 +163,203 @@ function AdminPanel() {
     <div className="admin-panel">
       <h1>Admin Dashboard</h1>
 
-      <section className="products-section">
-        <h2>{editingProductId ? "Edit Product" : "Add New Product"}</h2>
+      <div className="admin-tabs">
+        <button
+          className={`tab-btn ${activeTab === "products" ? "active" : ""}`}
+          onClick={() => setActiveTab("products")}
+        >
+          Products
+        </button>
+        <button
+          className={`tab-btn ${activeTab === "users" ? "active" : ""}`}
+          onClick={() => setActiveTab("users")}
+        >
+          Users
+        </button>
+        <button
+          className={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
+          onClick={() => setActiveTab("orders")}
+        >
+          Orders
+        </button>
+      </div>
 
-        <form className="admin-product-form" onSubmit={handleProductSubmit}>
-          <div className="form-group">
-            <label>Product Name</label>
-            <input type="text" name="name" placeholder="Enter name" value={productForm.name} onChange={handleProductChange} required />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <input type="text" name="description" placeholder="Enter description" value={productForm.description} onChange={handleProductChange} />
-          </div>
-          <div className="form-group">
-            <label>Price (₹)</label>
-            <input type="number" name="price" placeholder="0.00" value={productForm.price} onChange={handleProductChange} required />
-          </div>
-          <div className="form-group">
-            <label>Stock Quantity</label>
-            <input type="number" name="stock" placeholder="0" value={productForm.stock} onChange={handleProductChange} required />
-          </div>
-          <div className="form-group">
-            <label>Category</label>
-            <input type="text" name="category" placeholder="Category" value={productForm.category} onChange={handleProductChange} />
-          </div>
-          <div className="form-group">
-            <label>Product Image</label>
-            <input type="file" name="image" onChange={handleProductChange} accept="image/*" />
-          </div>
-          <div className="form-group">
-            <label>Strength</label>
-            <input type="text" name="strength" placeholder="e.g. 500mg" value={productForm.strength} onChange={handleProductChange} />
-          </div>
-          <div className="form-group">
-            <label>Expiry Date</label>
-            <input type="date" name="expiry_date" value={productForm.expiry_date} onChange={handleProductChange} />
-          </div>
-          <div className="form-group">
-            <label>Rating</label>
-            <input type="text" name="rating" placeholder="4.5" value={productForm.rating} onChange={handleProductChange} />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            {editingProductId ? "Update Product" : "Add Product"}
-          </button>
-          {editingProductId && (
-            <button type="button" className="btn btn-secondary" onClick={() => setEditingProductId(null)}>
-              Cancel Edit
+      {activeTab === "products" && (
+        <section className="products-section animate-fade">
+          <h2>{editingProductId ? "Edit Product" : "Add New Product"}</h2>
+
+          <form className="admin-product-form" onSubmit={handleProductSubmit}>
+            <div className="form-group">
+              <label>Product Name</label>
+              <input type="text" name="name" placeholder="Enter name" value={productForm.name} onChange={handleProductChange} required />
+            </div>
+            <div className="form-group">
+              <label>Description</label>
+              <input type="text" name="description" placeholder="Enter description" value={productForm.description} onChange={handleProductChange} />
+            </div>
+            <div className="form-group">
+              <label>Price (₹)</label>
+              <input type="number" name="price" placeholder="0.00" value={productForm.price} onChange={handleProductChange} required />
+            </div>
+            <div className="form-group">
+              <label>Stock Quantity</label>
+              <input type="number" name="stock" placeholder="0" value={productForm.stock} onChange={handleProductChange} required />
+            </div>
+            <div className="form-group">
+              <label>Category</label>
+              <input type="text" name="category" placeholder="Category" value={productForm.category} onChange={handleProductChange} />
+            </div>
+            <div className="form-group">
+              <label>Product Image</label>
+              <input type="file" name="image" onChange={handleProductChange} accept="image/*" />
+            </div>
+            <div className="form-group">
+              <label>Strength</label>
+              <input type="text" name="strength" placeholder="e.g. 500mg" value={productForm.strength} onChange={handleProductChange} />
+            </div>
+            <div className="form-group">
+              <label>Expiry Date</label>
+              <input type="date" name="expiry_date" value={productForm.expiry_date} onChange={handleProductChange} />
+            </div>
+            <div className="form-group">
+              <label>Rating</label>
+              <input type="text" name="rating" placeholder="4.5" value={productForm.rating} onChange={handleProductChange} />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              {editingProductId ? "Update Product" : "Add Product"}
             </button>
-          )}
-        </form>
+            {editingProductId && (
+              <button type="button" className="btn btn-secondary" onClick={() => setEditingProductId(null)}>
+                Cancel Edit
+              </button>
+            )}
+          </form>
 
-        <div className="table-container">
-          <table className="products-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Category</th>
-                <th>Strength</th>
-                <th>Rating</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((prod) => (
-                <tr key={prod.id}>
-                  <td>{prod.id}</td>
-                  <td>{prod.name}</td>
-                  <td>₹{Number(prod.price).toFixed(2)}</td>
-                  <td>{prod.stock}</td>
-                  <td>{prod.category}</td>
-                  <td>{prod.strength}</td>
-                  <td>{prod.rating}</td>
-                  <td>
-                    <div className="actions">
-                      <button className="btn btn-edit" onClick={() => handleEditProduct(prod)}>Edit</button>
-                      <button className="btn btn-delete" onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
-                    </div>
-                  </td>
+          <div className="table-container">
+            <table className="products-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Category</th>
+                  <th>Strength</th>
+                  <th>Rating</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {products.map((prod) => (
+                  <tr key={prod.id}>
+                    <td>{prod.id}</td>
+                    <td>{prod.name}</td>
+                    <td>₹{Number(prod.price).toFixed(2)}</td>
+                    <td>{prod.stock}</td>
+                    <td>{prod.category}</td>
+                    <td>{prod.strength}</td>
+                    <td>{prod.rating}</td>
+                    <td>
+                      <div className="actions">
+                        <button className="btn btn-edit" onClick={() => handleEditProduct(prod)}>Edit</button>
+                        <button className="btn btn-delete" onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
-      <section className="users-section">
-        <h2>Registered Users</h2>
-        <div className="table-container">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Gender</th>
-                <th>Age</th>
-                <th>Phone</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.gender}</td>
-                  <td>{user.age}</td>
-                  <td>{user.phone}</td>
-                  <td>
-                    <button className="btn btn-delete" onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                  </td>
+      {activeTab === "users" && (
+        <section className="users-section animate-fade">
+          <h2>Registered Users</h2>
+          <div className="table-container">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Gender</th>
+                  <th>Age</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.gender}</td>
+                    <td>{user.age}</td>
+                    <td>{user.phone}</td>
+                    <td>
+                      <button className="btn btn-delete" onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
+
+      {activeTab === "orders" && (
+        <section className="orders-section animate-fade">
+          <h2>Order Management</h2>
+          <div className="table-container">
+            <table className="orders-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order.id}>
+                    <td>#{order.id}</td>
+                    <td>
+                      <div className="user-cell">
+                        <strong>{order.userName}</strong>
+                        <span>{order.userEmail}</span>
+                      </div>
+                    </td>
+                    <td>₹{Number(order.total_amount).toFixed(2)}</td>
+                    <td>
+                      <span className={`status-tag ${order.status.toLowerCase()}`}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                    <td>
+                      <select
+                        value={order.status}
+                        onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
+                        className="status-select"
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

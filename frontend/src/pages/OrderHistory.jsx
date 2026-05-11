@@ -65,7 +65,14 @@ const OrderHistory = () => {
   return (
     <div className="order-history-page">
       <div className="history-container animate-fade">
-        <h1 className="page-title">My Orders</h1>
+        <div className="history-header">
+          <h1 className="page-title">My Orders</h1>
+          <div className="status-legend">
+            <span className="legend-item"><span className="dot pending"></span> Pending</span>
+            <span className="legend-item"><span className="dot shipped"></span> Shipped</span>
+            <span className="legend-item"><span className="dot delivered"></span> Delivered</span>
+          </div>
+        </div>
         
         {orders.length === 0 ? (
           <div className="no-orders card">
@@ -81,7 +88,7 @@ const OrderHistory = () => {
                 <div className="order-header" onClick={() => toggleOrderDetails(order.id)}>
                   <div className="order-main-info">
                     <span className="order-id">Order #{order.id}</span>
-                    <span className="order-date">{new Date(order.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}</span>
+                    <span className="order-date">{new Date(order.created_at).toLocaleDateString(undefined, { dateStyle: 'medium' })}</span>
                   </div>
                   
                   <div className="order-status-amount">
@@ -91,7 +98,7 @@ const OrderHistory = () => {
                     >
                       {order.status}
                     </span>
-                    <span className="order-total">₹{Number(order.totalAmount).toFixed(2)}</span>
+                    <span className="order-total">₹{Number(order.total_amount).toFixed(2)}</span>
                     <span className={`expand-icon ${expandedOrder === order.id ? 'active' : ''}`}>▼</span>
                   </div>
                 </div>
@@ -100,10 +107,10 @@ const OrderHistory = () => {
                   <div className="order-details animate-fade">
                     <div className="details-grid">
                       <div className="shipping-info">
-                        <h3>Shipping Address</h3>
-                        <p>{order.shippingAddress}</p>
+                        <h3>Shipping & Payment</h3>
+                        <p><strong>Address:</strong> {order.shipping_address}</p>
                         <p><strong>Phone:</strong> {order.phone}</p>
-                        <p><strong>Payment:</strong> {order.paymentMethod.toUpperCase()}</p>
+                        <p><strong>Payment Method:</strong> {order.payment_method?.toUpperCase()}</p>
                       </div>
                       
                       <div className="items-info">

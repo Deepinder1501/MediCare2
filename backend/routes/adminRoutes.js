@@ -5,7 +5,9 @@ import {
   addProduct,
   updateProduct,
   deleteProduct,
-  getAllProducts  
+  getAllProducts,
+  getAllOrders,
+  updateOrderStatus
 } from "../controllers/adminController.js";
 import upload from "../middleware/uploadMiddleware.js";
 
@@ -25,6 +27,10 @@ router.get("/products", getAllProducts);
 router.post("/products", upload.single("image"), addProduct);
 router.put("/products/:id", upload.single("image"), updateProduct);
 router.delete("/products/:id", deleteProduct);
+
+// Orders
+router.get("/orders", getAllOrders);
+router.put("/orders/:id/status", updateOrderStatus);
 
 export default router;
 

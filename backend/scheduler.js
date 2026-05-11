@@ -1,13 +1,15 @@
 import cron from "node-cron";
 import db from "./config/mysql.js";
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
-// Setup your email transporter (example using Gmail)
+// Setup your email transporter (using environment variables)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "deepinder1501@gmail.com",
-    pass: "lcbw qwvk otyc pthw" // use App Password if 2FA is enabled
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 

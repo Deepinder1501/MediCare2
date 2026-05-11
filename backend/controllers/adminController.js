@@ -57,7 +57,7 @@ export const getAllProducts = (req, res) => {
 // Add product
 export const addProduct = (req, res) => {
   const { name, description, price, stock, category, strength, expiry_date, rating } = req.body;
-  const image = req.file ? req.file.filename : req.body.image;
+  const image = req.file ? req.file.path : req.body.image;
 
   if (!name || !price || !stock) {
     return res.status(400).json({ error: "Name, price, and stock are required" });
@@ -78,7 +78,7 @@ export const addProduct = (req, res) => {
 export const updateProduct = (req, res) => {
   const { id } = req.params;
   const { name, description, price, stock, category, strength, expiry_date, rating } = req.body;
-  const image = req.file ? req.file.filename : req.body.image;
+  const image = req.file ? req.file.path : req.body.image;
 
   const query = `
     UPDATE products 
@@ -101,5 +101,34 @@ export const deleteProduct = (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     if (result.affectedRows === 0) return res.status(404).json({ error: "Product not found" });
     res.json({ message: "Product deleted successfully" });
+  });
+};
+
+// ================= ORDERS =================
+
+// Get all orders with user details
+export const getAllOrders = (req, res) => {
+  const query = `
+    SELECT o.*, u.name as userName, u.email as userEmail 
+    FROM orders o 
+    JOIN users u ON o.user_id = u.id 
+    ORDER BY o.created_at DESC
+  `;
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};
+
+// Update order status
+export const updateOrderStatus = (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const query = "UPDATE orders SET status = ? WHERE id = ?";
+  db.query(query, [status, id], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (result.affectedRows === 0) return res.status(404).json({ error: "Order not found" });
+    res.json({ message: "Order status updated successfully" });
   });
 };

@@ -4,7 +4,9 @@ import "./AboutUs.css";
 const AboutUs = () => {
   return (
     <div className="about-container">
-      <h2 className="about-title">About Us</h2>
+      <div className="about-header-flex">
+        <h1 className="page-title">About Us</h1>
+      </div>
       <p className="about-subtitle">
         Welcome to MediCare! We are dedicated to providing the best medical products
         and services to our customers with quality, reliability, and care.

@@ -123,7 +123,13 @@ const Products = () => {
                 <div className="product-badge">{product.category}</div>
                 <Link to={`/product/${product.id}`} className="product-image-wrapper">
                   <img
-                    src={product.image && product.image.includes("-") ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${product.image}` : `/assets/${product.image}`}
+                    src={
+                      product.image && product.image.startsWith("http")
+                        ? product.image
+                        : product.image && product.image.includes("-")
+                          ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${product.image}`
+                          : `/assets/${product.image}`
+                    }
                     alt={product.name}
                     className="product-image"
                   />
