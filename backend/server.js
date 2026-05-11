@@ -30,9 +30,15 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
+    
+    // Normalize origin by removing trailing slash for comparison
+    const normalizedOrigin = origin.replace(/\/$/, "");
+    const normalizedAllowed = allowedOrigins.map(o => o?.replace(/\/$/, ""));
+
+    if (normalizedAllowed.includes(normalizedOrigin)) {
       return callback(null, true);
     } else {
+      console.log("🚫 CORS Blocked Origin:", origin); // This will show in Render logs
       return callback(new Error("Not allowed by CORS"));
     }
   },
