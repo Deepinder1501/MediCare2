@@ -4,10 +4,10 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import db from "./config/mysql.js"; 
-import authRoutes from "./routes/authRoutes.js"; 
+import db from "./config/mysql.js";
+import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
-import "./scheduler.js"; 
+import "./scheduler.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contact.js";
@@ -21,8 +21,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
+const allowedOrigins = [
+  "https://medicare2-black.vercel.app",
+  "http://localhost:5173",
+  process.env.CLIENT_URL
+].filter(Boolean); // Remove undefined/null values
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -35,7 +48,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/cart",cartRoutes);
+app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/auth/profile", profileRoute);
