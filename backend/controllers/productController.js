@@ -4,7 +4,10 @@ import db from "../config/mysql.js";
 export const getAllProducts = (req, res) => {
   const query = "SELECT * FROM products";
   db.query(query, (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("❌ Database Error (getAllProducts):", err.message);
+      return res.status(500).json({ error: err.message });
+    }
     res.json(results);
   });
 };

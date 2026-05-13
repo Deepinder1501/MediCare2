@@ -25,20 +25,19 @@ const allowedOrigins = [
   "https://medicare2-black.vercel.app",
   "http://localhost:5173",
   process.env.CLIENT_URL
-].filter(Boolean); // Remove undefined/null values
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    
-    // Normalize origin by removing trailing slash for comparison
+
     const normalizedOrigin = origin.replace(/\/$/, "");
     const normalizedAllowed = allowedOrigins.map(o => o?.replace(/\/$/, ""));
 
     if (normalizedAllowed.includes(normalizedOrigin)) {
       return callback(null, true);
     } else {
-      console.log("🚫 CORS Blocked Origin:", origin); // This will show in Render logs
+      console.log("🚫 CORS Blocked Origin:", origin);
       return callback(new Error("Not allowed by CORS"));
     }
   },
