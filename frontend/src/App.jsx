@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import AdminPanel from "./pages/AdminPanel";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -32,14 +32,11 @@ const ProtectedRoute = ({ children, isAdminRequired = false }) => {
   return children;
 };
 
-function AppContent() {
-  const location = useLocation();
-  const isAdminPath = location.pathname === "/admin";
-
+function App() {
   return (
-    <>
+    <Router>
       <ScrollToTop />
-      {!isAdminPath && <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route 
@@ -97,18 +94,9 @@ function AppContent() {
           } 
         />
       </Routes>
-      {!isAdminPath && <Footer />}
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AppContent />
+      <Footer />
     </Router>
   );
 }
 
 export default App;
-
