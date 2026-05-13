@@ -14,9 +14,7 @@ router.post("/", async (req, res) => {
 
   try {
     let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -24,18 +22,20 @@ router.post("/", async (req, res) => {
     });
 
     let mailOptions = {
-      from: email,
+      from: `"MediCare Contact" <${process.env.EMAIL_USER}>`,
+      replyTo: email,
       to: process.env.EMAIL_USER,
       subject: `New Query from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     };
 
     await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent successfully");
 
     res.json({ success: true, message: "Message sent successfully!" });
   } catch (err) {
-    console.error("Email send error:", err);
-    res.status(500).json({ error: "Something went wrong. Try again later." });
+    console.error("❌ Email send error:", err.message);
+    res.status(500).json({ error: `Mail Error: ${err.message}` });
   }
 });
 
